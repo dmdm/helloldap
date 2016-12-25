@@ -1,0 +1,26 @@
+<div class="container">
+    <h1>Admin</h1>
+
+    <p><a class="btn btn-primary" routerLink="/dashboard">Dashboard</a></p>
+
+    <div class="row">
+        <div class="col-sm-4">Users</div>
+        <div class="col-sm-4">Groups</div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <ul>
+                <li *ngFor="let user of users$ | async">{{user}}</li>
+            </ul>
+        </div>
+        <div class="col-sm-4">
+            <ul>
+                <li *ngFor="let group of groups$ | async">{{group}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4"><button class="btn btn-default" (click)="loadUsers()">Lode Üsers</button></div>
+        <div class="col-sm-4"><button class="btn btn-default" (click)="loadGroups()">Lode Grüps</button></div>
+    </div>
+</div>

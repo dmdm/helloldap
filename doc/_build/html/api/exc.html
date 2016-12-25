@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>helloldap.cli &#8212; helloLDAP 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="helloldap.mock_ldap" href="logging_tools.html" />
+    <link rel="prev" title="helloldap.exc" href="cli.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-helloldap.cli">
+<span id="helloldap-cli"></span><h1>helloldap.cli<a class="headerlink" href="#module-helloldap.cli" title="Permalink to this headline">¶</a></h1>
+<p>Tools to assist CLI scripts.</p>
+<dl class="function">
+<dt id="helloldap.cli.add_parser_args">
+<code class="descclassname">helloldap.cli.</code><code class="descname">add_parser_args</code><span class="sig-paren">(</span><em>parser</em>, <em>which=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/helloldap/cli.html#add_parser_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helloldap.cli.add_parser_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds default arguments to given parser instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parser</strong> &#8211; Instance of a parser</li>
+<li><strong>which</strong> &#8211; List of 2-Tuples. 1st elem tells which argument to add,
+2nd elem tells requiredness.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="helloldap.cli.build_rc">
+<code class="descclassname">helloldap.cli.</code><code class="descname">build_rc</code><span class="sig-paren">(</span><em>args</em>, <em>default_rc</em>, <em>config='config'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/helloldap/cli.html#build_rc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helloldap.cli.build_rc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds map of settings.</p>
+<p>Settings are taken from <cite>default_rc</cite>, optionally overridden by settings
+in the config file specified on command line, optionally overridden by
+explicit command line arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> &#8211; Namespace with CLI arguments</li>
+<li><strong>default_rc</strong> &#8211; Dict with default settings</li>
+<li><strong>config</strong> &#8211; Key in <cite>args</cite> that gives path to external config file</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">ChainMap with settings</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="helloldap.cli.init_cli_locale">
+<code class="descclassname">helloldap.cli.</code><code class="descname">init_cli_locale</code><span class="sig-paren">(</span><em>locale_name</em>, <em>detach_stdout=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/helloldap/cli.html#init_cli_locale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helloldap.cli.init_cli_locale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises CLI locale and encoding.</p>
+<p>Sets a certain locale. Ensures that output is correctly encoded, whether
+it is send directly to a console or piped.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>locale_name</strong> &#8211; A locale name, e.g. &#8220;de_DE.utf8&#8221;.</li>
+<li><strong>detach_stdout</strong> &#8211; If True (default), and we are not in a TTY (meaning,
+output is piped somewhere), we replace original STDOUT with a writer
+from the codecs module. If you do not want that (e.g. in PyCharm test
+runner), set this to False.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">active locale as 2-tuple (lang_code, encoding)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="cli.html" title="previous chapter">helloldap.exc</a></li>
+      <li>Next: <a href="logging_tools.html" title="next chapter">helloldap.mock_ldap</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/exc.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dirk Makowski.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/api/exc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

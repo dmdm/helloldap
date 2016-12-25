@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>helloldap.scripts.serve &#8212; helloLDAP 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="helloldap.auth.views" href="views.html" />
+    <link rel="prev" title="helloldap.auth.mw" href="mw.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-helloldap.scripts.serve">
+<span id="helloldap-scripts-serve"></span><h1>helloldap.scripts.serve<a class="headerlink" href="#module-helloldap.scripts.serve" title="Permalink to this headline">¶</a></h1>
+<p>CLI to start the server.</p>
+<dl class="class">
+<dt id="helloldap.scripts.serve.Runner">
+<em class="property">class </em><code class="descclassname">helloldap.scripts.serve.</code><code class="descname">Runner</code><span class="sig-paren">(</span><em>server</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/helloldap/scripts/serve.html#Runner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helloldap.scripts.serve.Runner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This is the CLI wrapper to start the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>server</strong> &#8211; Instance of the server to start.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="helloldap.scripts.serve.Runner.init_runner">
+<code class="descname">init_runner</code><span class="sig-paren">(</span><em>args</em>, <em>lgg=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/helloldap/scripts/serve.html#Runner.init_runner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helloldap.scripts.serve.Runner.init_runner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises runner with logger, console, rc.</p>
+<p>Logger and rc are passed to the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Namespace of parsed CLI arguments</li>
+<li><strong>lgg</strong> &#8211; Inject a logger, or keep the default module logger</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="helloldap.scripts.serve.Runner.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/helloldap/scripts/serve.html#Runner.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helloldap.scripts.serve.Runner.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run, Lola, run.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="helloldap.scripts.serve.main">
+<code class="descclassname">helloldap.scripts.serve.</code><code class="descname">main</code><span class="sig-paren">(</span><em>argv=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/helloldap/scripts/serve.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helloldap.scripts.serve.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="helloldap.scripts.serve.parse_args">
+<code class="descclassname">helloldap.scripts.serve.</code><code class="descname">parse_args</code><span class="sig-paren">(</span><em>runner</em>, <em>argv</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/helloldap/scripts/serve.html#parse_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helloldap.scripts.serve.parse_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="mw.html" title="previous chapter">helloldap.auth.mw</a></li>
+      <li>Next: <a href="views.html" title="next chapter">helloldap.auth.views</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/scripts/serve.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dirk Makowski.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../../_sources/api/scripts/serve.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,89 @@
+/*!
+ * helloLDAP
+ */
+$enable-flex: true;
+
+@import "_scss/variables";
+
+
+/*!
+ * Bootstrap v4.0.0-alpha.5 (https://getbootstrap.com)
+ * Copyright 2011-2016 The Bootstrap Authors
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+// Core variables and mixins
+@import "_bs4/custom";
+//@import "_bs4/variables";
+@import "_bs4/mixins";
+
+// Reset and dependencies
+@import "_bs4/normalize";
+//@import "_bs4/print";
+
+// Core CSS
+@import "_bs4/reboot";
+@import "_bs4/type";
+//@import "_bs4/images";
+//@import "_bs4/code";
+@import "_bs4/grid";
+@import "_bs4/tables";
+@import "_bs4/forms";
+@import "_bs4/buttons";
+
+// Components
+//@import "_bs4/animation";
+//@import "_bs4/dropdown";
+//@import "_bs4/button-group";
+@import "_bs4/input-group";
+@import "_bs4/custom-forms";
+@import "_bs4/nav";
+@import "_bs4/navbar";
+@import "_bs4/card";
+@import "_bs4/breadcrumb";
+@import "_bs4/pagination";
+//@import "_bs4/tags";
+@import "_bs4/jumbotron";
+@import "_bs4/alert";
+//@import "_bs4/progress";
+//@import "_bs4/media";
+//@import "_bs4/list-group";
+//@import "_bs4/responsive-embed";
+//@import "_bs4/close";
+
+// Components w/ JavaScript
+@import "_bs4/modal";
+@import "_bs4/tooltip";
+@import "_bs4/popover";
+//@import "_bs4/carousel";
+
+// Utility classes
+@import "_bs4/utilities";
+
+/*!
+ * helloLDAP
+ */
+
+a.disabled {
+   pointer-events: none;
+   cursor: default;
+}
+
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid $brand-success;
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid $brand-danger;
+}
+
+.groove {
+  display: inline-block;
+  padding: 2px 4px;
+  background: $gray-lighter;
+  border: 1px solid $gray-light;
+  border-bottom-color: $gray-lighter;
+  border-right-color: $gray-lighter;
+
+}

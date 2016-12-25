@@ -1,0 +1,13 @@
+<div class="container">
+    <h1>Dashboard</h1>
+
+    <p>Congratulations. You have managed to login.</p>
+
+    <p>Now, before you may administrate users and groups, you need to pass a final hurdle:</p>
+
+    <p>Are you a member of the wheel group?
+        <span *ngIf="isAdmin">But Sir!</span>
+        <span *ngIf="!isAdmin">Naah, poor laddie!</span>
+        <a class="btn btn-primary" routerLink="/admin" [class.disabled]="isAdmin ? null : true">Admin</a>
+    </p>
+</div>

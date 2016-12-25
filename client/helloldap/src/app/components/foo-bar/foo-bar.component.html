@@ -1,0 +1,8 @@
+<nav class="navbar navbar-fixed-bottom navbar-light bg-faded">
+    <a class="navbar-brand" href="#">{{appTitle}}</a>
+    <span class="navbar-text groove rounded">{{username}}</span>
+    <span class="navbar-text">JWT since</span>
+    <span class="navbar-text groove rounded">{{jwtTime}}</span>
+    <button *ngIf="isLoggedIn" class="btn btn-default" (click)="refreshJwt()">Refresh JWT</button>
+    <button *ngIf="isLoggedIn" class="btn btn-default" (click)="logout()">Logout</button>
+</nav>

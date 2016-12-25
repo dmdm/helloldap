@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>helloldap.server &#8212; helloLDAP 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="helloldap.auth" href="auth/index.html" />
+    <link rel="prev" title="helloldap.logging_tools" href="mock_ldap.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-helloldap.server">
+<span id="helloldap-server"></span><h1>helloldap.server<a class="headerlink" href="#module-helloldap.server" title="Permalink to this headline">¶</a></h1>
+<p>The server.</p>
+<dl class="class">
+<dt id="helloldap.server.Server">
+<em class="property">class </em><code class="descclassname">helloldap.server.</code><code class="descname">Server</code><a class="reference internal" href="../_modules/helloldap/server.html#Server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helloldap.server.Server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This is the actual server.</p>
+<p>After instantiation, but before calling <a class="reference internal" href="#helloldap.server.Server.run" title="helloldap.server.Server.run"><code class="xref py py-meth docutils literal"><span class="pre">run()</span></code></a>, set these
+properties:</p>
+<blockquote>
+<div><ul class="simple">
+<li>&#8216;lgg&#8217;: Instance of a logger</li>
+<li>&#8216;rc&#8217;: Instance of the dict with configuration</li>
+</ul>
+</div></blockquote>
+<p>After <a class="reference internal" href="#helloldap.server.Server.run" title="helloldap.server.Server.run"><code class="xref py py-meth docutils literal"><span class="pre">run()</span></code></a> was called, property &#8216;app&#8217; will contain the instance
+of the web application.</p>
+<dl class="method">
+<dt id="helloldap.server.Server.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/helloldap/server.html#Server.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helloldap.server.Server.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run until interrupted with CTRL-C.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="helloldap.server.Server.setup_routes">
+<code class="descname">setup_routes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/helloldap/server.html#Server.setup_routes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helloldap.server.Server.setup_routes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="mock_ldap.html" title="previous chapter">helloldap.logging_tools</a></li>
+      <li>Next: <a href="auth/index.html" title="next chapter">helloldap.auth</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/server.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dirk Makowski.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/api/server.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

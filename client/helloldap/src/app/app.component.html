@@ -1,0 +1,9 @@
+<foo-bar [appTitle]="appTitle"
+         [username]="username$|async"
+         [jwtTime]="jwtTime$|async"
+         [isLoggedIn]="isLoggedIn$|async"
+         (onRefreshJwt)="refreshJwt()"
+         (onLogout)="logout()">
+</foo-bar>
+
+<router-outlet></router-outlet>

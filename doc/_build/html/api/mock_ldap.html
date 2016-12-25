@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>helloldap.logging_tools &#8212; helloLDAP 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="helloldap.scripts" href="scripts/index.html" />
+    <link rel="prev" title="helloldap.mock_ldap" href="logging_tools.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-helloldap.logging_tools">
+<span id="helloldap-logging-tools"></span><h1>helloldap.logging_tools<a class="headerlink" href="#module-helloldap.logging_tools" title="Permalink to this headline">¶</a></h1>
+<p>Tools to setup and help with logging.</p>
+<dl class="class">
+<dt id="helloldap.logging_tools.UTCFormatter">
+<em class="property">class </em><code class="descclassname">helloldap.logging_tools.</code><code class="descname">UTCFormatter</code><span class="sig-paren">(</span><em>fmt=None</em>, <em>datefmt=None</em>, <em>style='%'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/helloldap/logging_tools.html#UTCFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helloldap.logging_tools.UTCFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">logging.Formatter</span></code></p>
+<p>Helper class to set all logged timestamps to UTC.</p>
+<dl class="method">
+<dt id="helloldap.logging_tools.UTCFormatter.converter">
+<code class="descname">converter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#helloldap.logging_tools.UTCFormatter.converter" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>gmtime([seconds]) -&gt; (tm_year, tm_mon, tm_mday, tm_hour, tm_min,</dt>
+<dd>tm_sec, tm_wday, tm_yday, tm_isdst)</dd>
+</dl>
+<p>Convert seconds since the Epoch to a time tuple expressing UTC (a.k.a.
+GMT).  When &#8216;seconds&#8217; is not passed in, convert the current time instead.</p>
+<p>If the platform supports the tm_gmtoff and tm_zone, they are available as
+attributes only.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="helloldap.logging_tools.format_request">
+<code class="descclassname">helloldap.logging_tools.</code><code class="descname">format_request</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/helloldap/logging_tools.html#format_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helloldap.logging_tools.format_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats some request properties like in the access log.</p>
+<p>Template is:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{method}</span><span class="s2"> </span><span class="si">{url}</span><span class="s2"> HTTP/</span><span class="si">{version.major}</span><span class="s2">.</span><span class="si">{version.minor}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; Instance of a request.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Formatted string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="helloldap.logging_tools.setup_logging">
+<code class="descclassname">helloldap.logging_tools.</code><code class="descname">setup_logging</code><span class="sig-paren">(</span><em>lgg</em>, <em>rc</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/helloldap/logging_tools.html#setup_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helloldap.logging_tools.setup_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configures logging according to settings given in rc.</p>
+<p>Adjusts log level of given logger according to verbosity required by rc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lgg</strong> &#8211; Instance of a logger (e.g. root logger of this app)</li>
+<li><strong>rc</strong> &#8211; Dict with settings</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="logging_tools.html" title="previous chapter">helloldap.mock_ldap</a></li>
+      <li>Next: <a href="scripts/index.html" title="next chapter">helloldap.scripts</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/mock_ldap.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dirk Makowski.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/api/mock_ldap.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

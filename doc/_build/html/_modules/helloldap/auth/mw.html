@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>helloldap.auth.mw &#8212; helloLDAP 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for helloldap.auth.mw</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Middleware factories for authorization.</span>
+
+<span class="sd">Usage::</span>
+
+<span class="sd">        :</span>
+<span class="sd">        v</span>
+<span class="sd">    check_jwt               sets request[&#39;jwt_payload&#39;]</span>
+<span class="sd">        |</span>
+<span class="sd">        v</span>
+<span class="sd">    check_authorization     uses request[&#39;jwt_payload&#39;][&#39;g&#39;]</span>
+<span class="sd">        :</span>
+<span class="sd">        v</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">aiohttp</span> <span class="k">import</span> <span class="n">web</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">jwt.exceptions</span>
+
+<span class="kn">from</span> <span class="nn">..logging_tools</span> <span class="k">import</span> <span class="n">format_request</span>
+<span class="kn">from</span> <span class="nn">..exc</span> <span class="k">import</span> <span class="n">MissingJwtError</span>
+<span class="kn">from</span> <span class="nn">.jwt_tools</span> <span class="k">import</span> <span class="n">decode_headers</span>
+
+
+<span class="n">RE_ADMIN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^/api/v\d+/admin/&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="check_jwt"><a class="viewcode-back" href="../../../api/scripts/mw.html#helloldap.auth.mw.check_jwt">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">check_jwt</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">handler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks presence and validity of a JWT for specific URLs.</span>
+
+<span class="sd">    Requires a JWT for all URLs starting with &#39;/api&#39; (all others may be</span>
+<span class="sd">    accessed anonymously).</span>
+
+<span class="sd">    Stores the payload in &#39;request[&#39;jwt_payload&#39;].</span>
+
+<span class="sd">    :param app: Current web app</span>
+<span class="sd">    :param handler: Previous middleware handler</span>
+<span class="sd">    :return: This handler</span>
+<span class="sd">    :raise web.HTTPForbidden: if JWT is invalid</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">middleware_handler</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">rel_url</span><span class="o">.</span><span class="n">path</span>
+        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/api&#39;</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">request</span><span class="p">[</span><span class="s1">&#39;jwt_payload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">decode_headers</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
+                    <span class="n">app</span><span class="p">[</span><span class="s1">&#39;rc&#39;</span><span class="p">][</span><span class="s1">&#39;auth.jwt.secret&#39;</span><span class="p">])</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">MissingJwtError</span><span class="p">,</span> <span class="n">jwt</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">InvalidTokenError</span><span class="p">):</span>
+                <span class="n">app</span><span class="p">[</span><span class="s1">&#39;lgg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Invalid JWT token: </span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">format_request</span><span class="p">(</span><span class="n">request</span><span class="p">)))</span>
+                <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">HTTPForbidden</span><span class="p">()</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">handler</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+    <span class="k">return</span> <span class="n">middleware_handler</span></div>
+
+
+<div class="viewcode-block" id="check_authorization"><a class="viewcode-back" href="../../../api/scripts/mw.html#helloldap.auth.mw.check_authorization">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">check_authorization</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">handler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks authorization to access certain URLs.</span>
+
+<span class="sd">    This is a simple, hard-coded authorization check, that treats groups as</span>
+<span class="sd">    roles. If we determine that a role may access a resource, current user has</span>
+<span class="sd">    full access to it.</span>
+
+<span class="sd">    Since we do not discern access methods, it is not even a real implementation</span>
+<span class="sd">    of RBAC.</span>
+
+<span class="sd">    :param app: Current web app</span>
+<span class="sd">    :param handler: Previous middleware handler</span>
+<span class="sd">    :return: This handler</span>
+<span class="sd">    :raise web.HTTPForbidden: if no role has access to given resource</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">middleware_handler</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">rel_url</span><span class="o">.</span><span class="n">path</span>
+        <span class="k">if</span> <span class="n">RE_ADMIN</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s1">&#39;admins&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="p">[</span><span class="s1">&#39;jwt_payload&#39;</span><span class="p">][</span><span class="s1">&#39;g&#39;</span><span class="p">]:</span>
+                <span class="n">app</span><span class="p">[</span><span class="s1">&#39;lgg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="s2">&quot;User &#39;</span><span class="si">{user}</span><span class="s2">&#39; not in group &#39;admins&#39;: </span><span class="si">{req}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="p">[</span><span class="s1">&#39;jwt_payload&#39;</span><span class="p">][</span><span class="s1">&#39;u&#39;</span><span class="p">],</span>
+                        <span class="n">req</span><span class="o">=</span><span class="n">format_request</span><span class="p">(</span><span class="n">request</span><span class="p">)))</span>
+                <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">HTTPForbidden</span><span class="p">()</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">handler</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+    <span class="k">return</span> <span class="n">middleware_handler</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dirk Makowski.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

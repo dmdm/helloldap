@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introduction &#8212; helloLDAP 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="helloldap.exc" href="../api/cli.html" />
+    <link rel="prev" title="helloLDAP" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>Minimalistic demo of a server that resembles a REST facade in front of an LDAP service
+with a simple UI to manage users and groups.</p>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<p>For demo purposes, some URLs are accessible as an anonymous user (see <a class="reference internal" href="../api/server.html#helloldap.server.Server.setup_routes" title="helloldap.server.Server.setup_routes"><code class="xref py py-meth docutils literal"><span class="pre">helloldap.server.Server.setup_routes()</span></code></a> for details).</p>
+<p>To manage users and groups with the client application, however, authentication with username and password is necessary.
+To keep our API stateless, on successful login the server issues a JSON Web Token, which the client sends back
+with every following request. The server will then allow access to the resource depending on the contents of the JWT,
+no repetitive contact with LDAP is necessary.</p>
+<p>By default, the JWT expires 10 minutes after it was issued. The client must be able to repeat the authentication and the
+current request.</p>
+</div>
+<div class="section" id="server">
+<h2>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h2>
+<p>The server is <a class="reference external" href="http://aiohttp.readthedocs.io/">aiohttp</a> which sits on top of Python&#8217;s <a class="reference external" href="https://docs.python.org/3/library/asyncio.html">asyncio</a> module. We replace the
+built-in event-loop with <a class="reference external" href="https://github.com/MagicStack/uvloop">uvloop</a>, which is said to be <a class="reference external" href="https://magic.io/blog/uvloop-blazing-fast-python-networking/">faster than nodejs</a>.</p>
+<p>A full-flexed API could be documented and implemented with the help of <a class="reference external" href="http://aiohttp-swagger.readthedocs.io/en/latest/">aiohttp_swagger</a>.</p>
+<p>Files in folder &#8220;public_html&#8221; are served as static files under URL &#8220;/static/...&#8221;.</p>
+</div>
+<div class="section" id="client">
+<h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h2>
+<p>A simple UI written with <a class="reference external" href="https://angular.io/">Angular 2</a> and <a class="reference external" href="https://ng-bootstrap.github.io/#/getting-started">Bootstrap 4</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Introduction</a><ul>
+<li><a class="reference internal" href="#authentication">Authentication</a></li>
+<li><a class="reference internal" href="#server">Server</a></li>
+<li><a class="reference internal" href="#client">Client</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">helloLDAP</a></li>
+      <li>Next: <a href="../api/cli.html" title="next chapter">helloldap.exc</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/narr/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dirk Makowski.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/narr/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

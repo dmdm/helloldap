@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>helloldap.cli &#8212; helloLDAP 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for helloldap.cli</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Tools to assist CLI scripts.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">locale</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">ChainMap</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+
+<div class="viewcode-block" id="init_cli_locale"><a class="viewcode-back" href="../../api/exc.html#helloldap.cli.init_cli_locale">[docs]</a><span class="k">def</span> <span class="nf">init_cli_locale</span><span class="p">(</span><span class="n">locale_name</span><span class="p">,</span> <span class="n">detach_stdout</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialises CLI locale and encoding.</span>
+
+<span class="sd">    Sets a certain locale. Ensures that output is correctly encoded, whether</span>
+<span class="sd">    it is send directly to a console or piped.</span>
+
+<span class="sd">    :param locale_name: A locale name, e.g. &quot;de_DE.utf8&quot;.</span>
+<span class="sd">    :param detach_stdout: If True (default), and we are not in a TTY (meaning,</span>
+<span class="sd">        output is piped somewhere), we replace original STDOUT with a writer</span>
+<span class="sd">        from the codecs module. If you do not want that (e.g. in PyCharm test</span>
+<span class="sd">        runner), set this to False.</span>
+<span class="sd">    :return: active locale as 2-tuple (lang_code, encoding)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Set the locale</span>
+    <span class="k">if</span> <span class="n">locale_name</span><span class="p">:</span>
+        <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span> <span class="n">locale_name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">isatty</span><span class="p">():</span>
+            <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span> <span class="s1">&#39;en_GB.utf8&#39;</span><span class="p">)</span>
+    <span class="n">lang_code</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">getlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_CTYPE</span><span class="p">)</span>
+    <span class="c1"># If output goes to pipe, detach stdout to allow writing binary data.</span>
+    <span class="c1"># See http://docs.python.org/3/library/sys.html#sys.stdout</span>
+    <span class="k">if</span> <span class="n">detach_stdout</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">isatty</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="s1">&#39;detach&#39;</span><span class="p">):</span>
+            <span class="kn">import</span> <span class="nn">codecs</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">getwriter</span><span class="p">(</span><span class="n">encoding</span><span class="p">)(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">lang_code</span><span class="p">,</span> <span class="n">encoding</span></div>
+
+
+<div class="viewcode-block" id="add_parser_args"><a class="viewcode-back" href="../../api/exc.html#helloldap.cli.add_parser_args">[docs]</a><span class="k">def</span> <span class="nf">add_parser_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds default arguments to given parser instance.</span>
+
+<span class="sd">    :param parser: Instance of a parser</span>
+<span class="sd">    :param which: List of 2-Tuples. 1st elem tells which argument to add,</span>
+<span class="sd">        2nd elem tells requiredness.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--root-dir&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Use this directory as root/work&quot;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--etc-dir&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Directory with config, defaults to ROOT_DIR/etc&quot;</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">which</span><span class="p">:</span>
+        <span class="n">which</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;locale&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;verbose&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">which</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;config&#39;</span><span class="p">:</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+                <span class="s1">&#39;-c&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;--config&#39;</span><span class="p">,</span>
+                <span class="n">required</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">help</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Path to YAML file with configuration&quot;&quot;&quot;</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;locale&#39;</span><span class="p">:</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+                <span class="s1">&#39;-l&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;--locale&#39;</span><span class="p">,</span>
+                <span class="n">required</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">help</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Set the desired locale.</span>
+<span class="s2">                    If omitted and output goes directly to console, we</span>
+<span class="s2">                    automatically use the console&#39;s locale.&quot;&quot;&quot;</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;verbose&#39;</span><span class="p">:</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+                <span class="s1">&#39;-v&#39;</span><span class="p">,</span> <span class="s1">&#39;--verbose&#39;</span><span class="p">,</span>
+                <span class="n">action</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">help</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Sets logging level to show more details, can be</span>
+<span class="s2">                    stacked; e.g. -vvv. Typically we log only level warnings</span>
+<span class="s2">                    and higher, -v also logs level info, and -vv logs level</span>
+<span class="s2">                    debug. -vvv and -vvvv additionally sets root logger to</span>
+<span class="s2">                    level warnings or debug. If omitted at all, we use the</span>
+<span class="s2">                    settings from the config file.&quot;&quot;&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown: &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span></div>
+
+
+<div class="viewcode-block" id="build_rc"><a class="viewcode-back" href="../../api/exc.html#helloldap.cli.build_rc">[docs]</a><span class="k">def</span> <span class="nf">build_rc</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">default_rc</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="s1">&#39;config&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Builds map of settings.</span>
+
+<span class="sd">    Settings are taken from `default_rc`, optionally overridden by settings</span>
+<span class="sd">    in the config file specified on command line, optionally overridden by</span>
+<span class="sd">    explicit command line arguments.</span>
+
+<span class="sd">    :param args: Namespace with CLI arguments</span>
+<span class="sd">    :param default_rc: Dict with default settings</span>
+<span class="sd">    :param config: Key in `args` that gives path to external config file</span>
+<span class="sd">    :return: ChainMap with settings</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cli_rc</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="p">}</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">cli_rc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fn</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;rt&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">file_rc</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ChainMap</span><span class="p">(</span><span class="n">cli_rc</span><span class="p">,</span> <span class="n">file_rc</span><span class="p">,</span> <span class="n">default_rc</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ChainMap</span><span class="p">(</span><span class="n">cli_rc</span><span class="p">,</span> <span class="n">default_rc</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dirk Makowski.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -14,6 +14,11 @@ And yes, the client uses the store pattern and all components are OnPush.
 Installation
 ------------
 
+Python cryptography library needs to be compiled. Therefore install python3.5-dev
+and python3-cryptography in the global environment, to pull additional dependencies.
+Also needed is libssl-dev.
+
+
 helloLDAP is best installed and run inside a virtual environment, containing python 3.5+.
 
 1. Ensure, pip and sister tools are up-to-date:
@@ -27,6 +32,12 @@ helloLDAP is best installed and run inside a virtual environment, containing pyt
 1. Setup helloLDAP:
 
         pip install -e .
+
+Then enter folder client and install angular cli etc:
+
+        cd client/helloldap
+        npm install -g angular-cli
+        npm install
 
 
 Documentation
